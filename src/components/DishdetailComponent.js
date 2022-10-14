@@ -27,6 +27,10 @@ class Dishdetail extends Component {
         }           
     }
 
+    modifiedDate(date){
+        return "hello"
+    }
+
     renderComments(comments) {
             console.log("Comments ", comments)
             if(comments != null) {
@@ -38,7 +42,7 @@ class Dishdetail extends Component {
                                     return (
                                         <li key={comment.id}>
                                             <p>{comment.comment}</p>
-                                            <p>{comment.arthur}</p>
+                                            <p>-- {comment.author},{comment.date}</p>
                                         </li>
                                     )
                                 })}
