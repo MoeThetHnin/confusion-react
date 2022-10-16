@@ -15,7 +15,6 @@ import { Card, CardImg, CardImgOverlay,
     }
 
     const Menu = (props) => {
-
         const menu = props.dishes.map((dish) => {
             return (
                 <div className="col-12 col-md-5 m-1"  key={dish.id}>
@@ -23,7 +22,6 @@ import { Card, CardImg, CardImgOverlay,
                 </div>
             );
         });
-
         return (
             <div className="container">
                 <div className="row">
