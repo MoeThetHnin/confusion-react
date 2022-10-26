@@ -1,9 +1,26 @@
 import React from 'react';
-import RenderLeader from './RenderLeaderComponent';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-function About(props) {
+function RenderLeader(leaders){
+    return(
+        <div className="mb-3 p-3 border rounded">
+            <div className="row">
+                <div className="col-2">
+                    <img src={leaders.image} />
+                </div>
+                <div className="col">
+                    <h4 className="mb-2">{leaders.name}</h4>
+                    <div className="mb-2">{leaders.designation}</div>
+                    <div>{leaders.description}</div>
+                </div>
+            </div>
+            
+        </div>
+    );
+}
+
+const About = (props) => {
 
     const leaders = props.leaders.map((leader) => {
         return (
