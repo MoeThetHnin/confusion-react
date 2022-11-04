@@ -1,7 +1,52 @@
-import React from 'react';
 import { Card, CardImg, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+    CardTitle, Breadcrumb, BreadcrumbItem, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
+
+function CommentForm(args) {
+    const [modal, setModal] = useState(false);
+  
+    const toggle = () => setModal(!modal);
+  
+    return (
+      <div>
+        <Button outline onClick={toggle}>
+            Summit Comment
+        </Button>
+        <Modal isOpen={modal} toggle={toggle} {...args}>
+          <ModalHeader toggle={toggle}>Summit Comment</ModalHeader>
+          <ModalBody>
+            <FormGroup>
+                <Label for="ratingSelect">
+                    Rating
+                </Label>
+                <Input id="ratingSelect" name="select" type="select">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </Input>
+            </FormGroup>
+            <FormGroup>
+                <Label for="name">Your Name</Label>
+                <Input id="name" name="name" placeholder="Your Name" type="name"/>
+            </FormGroup>
+            <FormGroup>
+                <Label for="comment">Comment</Label>
+                <Input id="comment" name="comment" type="textarea"/>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={toggle}>
+              Summit
+            </Button>{' '}
+          </ModalFooter>
+        </Modal>
+      </div>
+    );
+  }
 
 function RenderDish({dish}) {
         if (dish != null){
@@ -71,6 +116,7 @@ const  DishDetail = (props) => {
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <RenderComments comments={props.comments} />
+                        <CommentForm />
                     </div>
                 </div>
                 </div>
