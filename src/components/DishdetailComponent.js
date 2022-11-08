@@ -1,52 +1,12 @@
 import { Card, CardImg, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem, Row, Col } from 'reactstrap';
+    CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
+import React, { Component  } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, Label, Row, Col } from 'reactstrap';
+import { Control, LocalForm, Errors } from 'react-redux-form';
 
-function CommentForm(args) {
-    const [modal, setModal] = useState(false);
-  
-    const toggle = () => setModal(!modal);
-  
-    return (
-      <div>
-        <Button outline onClick={toggle}>
-            Summit Comment
-        </Button>
-        <Modal isOpen={modal} toggle={toggle} {...args}>
-          <ModalHeader toggle={toggle}>Summit Comment</ModalHeader>
-          <ModalBody>
-            <FormGroup>
-                <Label for="ratingSelect">
-                    Rating
-                </Label>
-                <Input id="ratingSelect" name="select" type="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Input>
-            </FormGroup>
-            <FormGroup>
-                <Label for="name">Your Name</Label>
-                <Input id="name" name="name" placeholder="Your Name" type="name"/>
-            </FormGroup>
-            <FormGroup>
-                <Label for="comment">Comment</Label>
-                <Input id="comment" name="comment" type="textarea"/>
-            </FormGroup>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={toggle}>
-              Summit
-            </Button>{' '}
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
-  }
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
 
 function RenderDish({dish}) {
         if (dish != null){
@@ -69,7 +29,7 @@ function RenderDish({dish}) {
         }           
 }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
             // console.log("Comments ", comments)
             if(comments != null) {
                     return (
@@ -123,6 +83,91 @@ const  DishDetail = (props) => {
             );
         }
 }
+class CommentForm extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleSummit = this.handleSummit.bind(this);
 
+        this.state = {
+            isNavOpen: false,
+            isModalOpen: false
+        };
+      }
+
+      toggleModal() {
+        this.setState({
+          isModalOpen: !this.state.isModalOpen
+        });
+      }
+
+      handleSummit(event) {
+        this.toggleModal();
+        alert("Rating: " + this.ratingSelect.value + " Password: " + this.name.value);
+        event.preventDefault();
+
+    }
+
+    render() {
+        return (
+            <div>
+              <Button outline onClick={this.toggleModal}>
+                  Summit Comment
+              </Button>
+
+              <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal}>Summit Comment</ModalHeader>
+                    <ModalBody>
+                        <LocalForm onSubmit={this.handleSummit}>
+                            <Row className="form-group py-1">
+                                <Label htmlFor="ratingSelect">Rating</Label>
+                                <Col>
+                                    <Control.select model=".ratingSelect" id=".ratingSelect" rows="12" className="form-control" >
+                                        <option value="rate1">1</option>
+                                        <option value="rate2">2</option>
+                                        <option value="rate3">3</option>
+                                        <option value="rate4">4</option>
+                                        <option value="rate5">5</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group py-1">
+                                <Label htmlFor="name">Your Name</Label>
+                                <Col>
+                                    <Control.text model=".name" id="firstname" name="firstname"
+                                        placeholder="Your Name"
+                                        className="form-control"
+                                        validators={{
+                                            minLength: minLength(3), maxLength: maxLength(15)
+                                        }}
+                                         />
+                                    <Errors
+                                        className="text-danger"
+                                        model=".name"
+                                        show="touched"
+                                        messages={{
+                                            minLength: 'Must be greater than 2 characters',
+                                            maxLength: 'Must be 15 characters or less'
+                                        }}
+                                     />
+                                </Col>
+                            </Row>
+                            <Row className="form-group py-1">
+                                <Label htmlFor="comment">Your Feedback</Label>
+                                <Col>
+                                    <Control.textarea model=".comment" id="comment" name="comment"
+                                        rows="12"
+                                        className="form-control" />
+                                </Col>
+                            </Row>
+                                <Button type="submit" value="submit" color="primary">Summit</Button>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+            </div>
+          );
+    }
+}
 
 export default DishDetail;
