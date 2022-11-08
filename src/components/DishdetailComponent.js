@@ -45,7 +45,7 @@ function RenderComments({comments, addComment, dishId}) {
                                     )
                                 })}
                             </ul>
-                            <CommentForm />
+                            <CommentForm dishId={dishId} addComment={addComment} />
                         </div>
                     )
                     }
@@ -75,7 +75,10 @@ const  DishDetail = (props) => {
                         <RenderDish dish={props.dish} />
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} />
+                        <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+      />
                     </div>
                 </div>
                 </div>
@@ -103,8 +106,7 @@ class CommentForm extends Component {
 
       handleSummit(values) {
         this.toggleModal();
-        alert("Current state is "+ JSON.stringify(values));
-
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -133,9 +135,9 @@ class CommentForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group py-1">
-                                <Label htmlFor="name">Your Name</Label>
+                                <Label htmlFor="author">Your Name</Label>
                                 <Col>
-                                    <Control.text model=".name" id="firstname" name="firstname"
+                                    <Control.text model=".author" id="author" name="author"
                                         placeholder="Your Name"
                                         className="form-control"
                                         validators={{
@@ -144,7 +146,7 @@ class CommentForm extends Component {
                                          />
                                     <Errors
                                         className="text-danger"
-                                        model=".name"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             required: "Field is must",
